@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Graph</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+    <script src="lab1.js"></script>
+
+</head>
+<body>
+<canvas id="myChart"></canvas>
+
+<script>
+    let numbers = [];
+    let i = 0;
+
+    while (i < 190) {
+        numbers.push(i);
+        i++;
+    }
+
+    let ctx = document.getElementById('myChart').getContext('2d');
+
+    //Строим график зависимости величины погрешности от номера итерации
+    let chart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: numbers,
+            datasets: [{
+                label: 'Зависимость величины погрешности от номера итерации',
+
+                //backgroundColor: 'rgb(255, 99, 132)',
+                borderColor: 'rgb(255, 99, 132)',
+                data: epsilons,
+                pointRadius: 1,
+
+            }]
+        },
+
+    });
+
+    //Строим графики зависимости цены игры от номера итерации
+    let mixedChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            datasets: [{
+                label: 'Верхняя цена игры',
+                data: priceA,
+                pointRadius: 1,
+                borderColor: 'rgb(255, 99, 132)',
+                fill: false
+
+            }, {
+                label: 'Нижняя цена игры',
+                data: priceB,
+                type: 'line',
+                pointRadius: 1,
+                borderColor: 'rgb(255, 99, 66)',
+                fill: false
+
+            }],
+            labels: numbers
+        },
+
+    });
+
+</script>
+
+</body>
+</html>
