@@ -1,0 +1,36 @@
+.wrapper {
+    height: 100px;
+    width: 4500px;
+    text-align: left;
+    align-items: center;
+    justify-content: space-around;
+
+
+    padding: 5px;
+    display:inline-block
+}
+
+.child {
+    margin: 5px 0;
+
+}
+#scene{
+
+    width:450px;
+    height: 300px;
+    float: left;
+    /*border: aqua solid 1px;*/
+}
+.container{
+    width: 1000px;
+
+
+}
+#scene2{
+    /*border: aqua solid 1px;*/
+    width:450px;
+    height: 300px;
+    /*background: aqua;*/
+    float: right;
+
+}
