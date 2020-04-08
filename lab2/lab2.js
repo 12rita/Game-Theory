@@ -99,46 +99,75 @@ function findH(matrix, x, y) {
 
 }
 
+function findClosest(H, matrix) {
+    let matrixDist = [];
+    for (let i = 0; i < matrix.length; i++) {
+        matrixDist[i] = [];
+
+    }
+
+
+    for (let i = 0; i < matrix.length; i++) {
+        for (let j = 0; j < matrix.length; j++) {
+            matrixDist[i][j] = Math.abs(matrix[i][j] - H);
+        }
+    }
+
+    let minEl = Math.min(...[].concat(...matrixDist));
+    //let braunRobDesicion = {};
+    for (let i = 0; i < matrix.length; i++) {
+        for (let j = 0; j < matrix.length; j++) {
+            if (matrixDist[i][j] === minEl) {
+
+                return ({
+                    value: matrix[i][j],
+                    x: Number((i / (matrix.length - 1)).toFixed(3)),
+                    y: Number((j / (matrix.length - 1)).toFixed(3))
+
+                })
+
+
+            }
+        }
+    }
+
+}
+
 function algorithm() {
-    for (let i = 2; i < 11; i++) {
-        console.log( '\n'+'N=' + i);
-        let matrix = buildMatrix(i);
+    let e = 0;
+    let prices = [];
+    let counter = 0;
+    let N = 2;
+    let flag = false;
+    while (counter<5) {
+        console.log('\n' + 'N=' + N);
+        let matrix = buildMatrix(N);
         let saddlePoint = findSaddlePoint(matrix);
         if (saddlePoint) {
             console.log('Есть седловая точка: ' + '\n' + `x=${saddlePoint.x} ` + `y=${saddlePoint.y} ` + `H=${saddlePoint.value}`);
+            prices.push(saddlePoint.value);
         } else {
             let obj = braunRobinson(matrix);
             let H = findH(matrix, obj.x, obj.y);
-
-            let matrixDist = [];
-            for (let i = 0; i < matrix.length; i++) {
-                matrixDist[i] = [];
-
-            }
-
-
-            for (let i = 0; i < matrix.length; i++) {
-                for (let j = 0; j < matrix.length; j++) {
-                    matrixDist[i][j] = Math.abs(matrix[i][j] - H);
-                }
-            }
-
-            let minEl = Math.min(...[].concat(...matrixDist));
-            let braunRobDesicion = {};
-            for (let i = 0; i < matrixDist.length; i++) {
-                for (let j = 0; j < matrixDist.length; j++) {
-                    if (matrixDist[i][j] === minEl) {
-                        braunRobDesicion["x"] = Number((i / (matrix.length - 1)).toFixed(3));
-                        braunRobDesicion["y"] = Number((j / (matrix.length - 1)).toFixed(3));
-                        braunRobDesicion['value'] = matrix[i][j];
-
-                    }
-                }
-            }
-
-
-            console.log('Нет седловой точки. Решение методом Брауна-Робинсон: ' + 'x=' + braunRobDesicion['x'] + ' y=' + braunRobDesicion['y'] + ' H=' + braunRobDesicion["value"]);
+            let b_r_Desicion = findClosest(H, matrix);
+            console.log('Нет седловой точки. Решение методом Брауна-Робинсон: ' + 'x=' + b_r_Desicion.x + ' y=' + b_r_Desicion.y + ' H=' + b_r_Desicion.value);
+            prices.push(b_r_Desicion.value);
         }
+        if (prices.length>1){
+            e = Math.abs(prices[prices.length-1]-prices[prices.length-2]);
+            if (e<=0.001 && !flag){
+                counter=1;
+                flag = true;
+            }
+            else if (e<=0.001 && flag){
+                counter++;
+            }
+            else if (e>0.001) {
+                flag=false;
+            }
+        }
+        N++;
+
 
     }
 
