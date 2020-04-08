@@ -155,14 +155,14 @@ function algorithm() {
         }
         if (prices.length>1){
             e = Math.abs(prices[prices.length-1]-prices[prices.length-2]);
-            if (e<=0.001 && !flag){
+            if (e<=0.01 && !flag){
                 counter=1;
                 flag = true;
             }
-            else if (e<=0.001 && flag){
+            else if (e<=0.01 && flag){
                 counter++;
             }
-            else if (e>0.001) {
+            else if (e>0.01) {
                 flag=false;
             }
         }
