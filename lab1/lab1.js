@@ -1,4 +1,4 @@
-//let matrix = [[17, 4, 9], [0, 16, 9], [12, 2, 19]];
+let matrix = [[17, 4, 9], [0, 16, 9], [12, 2, 19]];
 
 let x0 = [17, 4, 9];
 let x1 = [0, 16, 9];
@@ -74,10 +74,9 @@ function findMaxWin(strategy, strategyAVector, wins, counter) {
     //     maxIdx = getRandomInt(3);
     //
     // }
-    if (!flag){
+    if (!flag) {
         maxIdx = getRandomInt(strategy.length);
-    }
-    else {
+    } else {
         strategy.forEach(function (item, idx) {
             if (item >= maxWin) {
                 maxWin = item;
@@ -115,10 +114,9 @@ function findMinLoose(strategy, strategyBVector, looses, counter) {
         }
 
     });
-    if (!flag){
+    if (!flag) {
         minIdx = getRandomInt(strategy.length);
-    }
-    else {
+    } else {
         strategy.forEach(function (item, idx) {
             if (item <= minLoose) {
                 minLoose = item;
@@ -137,9 +135,9 @@ function findMinLoose(strategy, strategyBVector, looses, counter) {
 
 //Вычисляем эпсилон
 function findE(wins, looses) {
-   //console.log(Math.min(...wins) - Math.max(...looses));
+    //console.log(Math.min(...wins) - Math.max(...looses));
 
-    return  (Math.min(...wins) - Math.max(...looses));
+    return (Math.min(...wins) - Math.max(...looses));
 
 }
 
@@ -182,6 +180,8 @@ function algorithm(matrix) {
     eps = findE(wins, looses);
     epsilons.push(eps);
     table.push({
+        Choose_A: k,
+        Choose_B: l,
         StratA: aCopy,
         StratB: bCopy,
         Win_A: wins[wins.length - 1].toFixed(2),
@@ -190,10 +190,9 @@ function algorithm(matrix) {
     });
 
 
-
-    while (eps > 0.001) {
+    while (eps > 0.1) {
         counter++;
-       // console.table(table);
+        // console.table(table);
         strategyA = sum(strategyA, transponation(matrix)[l]);
         strategyB = sum(strategyB, matrix[k]);
 
@@ -211,6 +210,8 @@ function algorithm(matrix) {
         priceB.push(maxLoose);
 
         table.push({
+            Choose_A: k,
+            Choose_B: l,
             StratA: aCopy,
             StratB: bCopy,
             Win_A: wins[wins.length - 1].toFixed(2),
@@ -226,7 +227,7 @@ function algorithm(matrix) {
     let maxLoose = Math.max(...looses);
 
 
-    //console.table(table);
+    console.table(table);
     let priceAverage = (minWin + maxLoose) / 2;
     let vecA = [];
     let vecB = [];
@@ -234,17 +235,18 @@ function algorithm(matrix) {
         vecA.push((strategyAVector[i] / counter).toFixed(3));
         vecB.push((strategyBVector[i] / counter).toFixed(3));
     }
+
     //console.log(strategyAVector, strategyBVector);
 
     // let vecA = [(strategyAVector[0] / counter).toFixed(3), (strategyAVector[1] / counter).toFixed(3), (strategyAVector[2] / counter).toFixed(3)];
     // let vecB = [(strategyBVector[0] / counter).toFixed(3), (strategyBVector[1] / counter).toFixed(3), (strategyBVector[2] / counter).toFixed(3)];
 
 
-    // console.log('Итеративный метод ' + '\n'
-    //     + 'Цена игры: ' + priceAverage.toFixed(2) + '\n' +
-    //     'Количество итераций: ' + counter + '\n' +
-    //     'Стратегия игрока А: ' + vecA + '\n' +
-    //     'Стратегия игрока В: ' + vecB);
+    console.log('Итеративный метод ' + '\n'
+        + 'Цена игры: ' + priceAverage.toFixed(2) + '\n' +
+        'Количество итераций: ' + counter + '\n' +
+        'Стратегия игрока А: ' + vecA + '\n' +
+        'Стратегия игрока В: ' + vecB);
 
     //
     // let cU = [120 / 3566, 170 / 3566, 94 / 3566]; //Результат умножения вектора u на матрицу, обратную к С
@@ -260,7 +262,7 @@ function algorithm(matrix) {
     //     'Стратегия игрока B: ' + yAn + '\n' +
     //     'Цена игры: ' + cAn);
 
-   // return eps;
+    // return eps;
 
     return {
         x: vecA,
@@ -269,5 +271,7 @@ function algorithm(matrix) {
 
 
 }
+
+algorithm(matrix);
 
 module.exports = algorithm;
